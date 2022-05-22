@@ -8,6 +8,7 @@
     let showMenu = false;
 
     const mouse = { x: 0, y: 0 };
+    const touchPos = { x: 0, y: 0 };
 
     function initDrag(e) {
         mouse.x = e.clientX;
@@ -28,6 +29,29 @@
         document.onmouseup = null;
         document.onmousemove = null;
     }
+
+    function initTouchDrag(e) {
+        const touchLocation = e.targetTouches[0];
+        touchPos.x = touchLocation.clientX;
+        touchPos.y = touchLocation.clientY;
+        document.ontouchmove = touchDrag;
+        document.ontouchend = endTouchDrag;
+    }
+
+    function touchDrag(e) {
+        const touchLocation = e.targetTouches[0];
+        console.log(touchLocation);
+        node.x += touchLocation.clientX - touchPos.x;
+        node.y += touchLocation.clientY - touchPos.y;
+        touchPos.x = touchLocation.clientX;
+        touchPos.y = touchLocation.clientY;
+        showMenu = false;
+    }
+
+    function endTouchDrag() {
+        document.ontouchmove = null;
+        document.ontouchend = null;
+    }
 </script>
 
 <div
@@ -45,6 +69,7 @@
         style="background-color: {node.color}"
         on:click={() => dispatch("finishEdge")}
         on:mousedown={initDrag}
+        on:touchstart={initTouchDrag}
     />
     {#if showMenu}
         <menu transition:fade={{ duration: 160 }}>
