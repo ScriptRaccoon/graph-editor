@@ -15,14 +15,14 @@
     class="edge {edge.type}"
     style="width: {length}px;
     height: {threshold}px;
+    left: {edge.start.x}px;
+    top: {edge.start.y - threshold / 2}px;
     transform:
-    translateX({edge.start.x}px) 
-    translateY({edge.start.y - threshold / 2}px) 
     rotate({edgeAngle}deg);
     --start-node-size: {edge.start.size}px;
     --end-node-size: {edge.end.size}px"
 >
-    <div class="line" />
+    <div class="content" />
     {#if showMenu}
         <menu
             transition:fade={{ duration: 160 }}
@@ -40,7 +40,6 @@
 
 <style>
     .edge {
-        --color: #222;
         position: absolute;
         transform-origin: left;
         cursor: pointer;
@@ -51,7 +50,8 @@
         padding-right: calc(0.5 * var(--end-node-size));
     }
 
-    .edge .line {
+    .content {
+        --color: #222;
         width: 100%;
         height: 2px;
         background-color: var(--color);
@@ -59,8 +59,8 @@
         align-items: center;
     }
 
-    .edge.arrow .line::after,
-    .edge.arrows .line::after {
+    .edge.arrow .content::after,
+    .edge.arrows .content::after {
         content: "";
         position: absolute;
         right: calc(0.5 * var(--end-node-size));
@@ -69,7 +69,7 @@
         border-left: 20px solid var(--color);
     }
 
-    .edge.arrows .line::before {
+    .edge.arrows .content::before {
         content: "";
         position: absolute;
         left: calc(0.5 * var(--start-node-size));

@@ -67,7 +67,6 @@
         text-align: justify;
     }
     h1 {
-        text-align: center;
         padding: 20px 0px;
         font-size: 44px;
         font-weight: 600;

@@ -35,6 +35,7 @@
 <div
     class="node"
     style="--size:{node.size}px;
+    --color: {node.color};
     left: {node.x - node.size / 2}px;
     top: {node.y - node.size / 2}px"
     on:mousedown={(e) => {
@@ -66,9 +67,10 @@
     }
 
     .circle {
-        border-radius: 50%;
         width: var(--size);
         height: var(--size);
+        background-color: var(--color);
+        border-radius: 50%;
         cursor: pointer;
     }
 </style>
