@@ -1,7 +1,7 @@
 <script>
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
-    import { fade } from "svelte/transition";
+    import NodeMenu from "./NodeMenu.svelte";
 
     export let node;
 
@@ -37,7 +37,7 @@
     style="--size:{node.size}px;
     left: {node.x - node.size / 2}px;
     top: {node.y - node.size / 2}px"
-    on:mousedown={(e) => {
+    on:click={(e) => {
         if (e.target.classList.contains("edit")) return;
         showMenu = !showMenu;
     }}
@@ -45,48 +45,11 @@
     <div
         class="circle"
         style="background-color: {node.color}"
-        on:click={() => dispatch("finishEdge")}
+        on:mousedown={() => dispatch("finishEdge")}
         on:mousedown={initDrag}
         on:touchstart={initDrag}
     />
-    {#if showMenu}
-        <menu transition:fade={{ duration: 160 }}>
-            <div>
-                <button
-                    on:click={() => dispatch("startEdge", "arrow")}
-                >
-                    <i class="fa-solid fa-arrow-right" />
-                </button>
-                <button
-                    on:click={() => dispatch("startEdge", "line")}
-                >
-                    <i class="fa-solid fa-minus" />
-                </button>
-                <button
-                    on:click={() => dispatch("startEdge", "arrows")}
-                >
-                    <i class="fa-solid fa-arrows-left-right" />
-                </button>
-                <button on:click={() => dispatch("delete")}>
-                    <i class="fa-solid fa-trash-can" />
-                </button>
-                <label>
-                    <i class="fa-solid fa-palette edit" />
-                    <input type="color" bind:value={node.color} />
-                </label>
-            </div>
-            <div>
-                <input
-                    class="edit"
-                    type="range"
-                    bind:value={node.size}
-                    min="5"
-                    max="60"
-                />
-                <small>{node.size}px</small>
-            </div>
-        </menu>
-    {/if}
+    <NodeMenu bind:showMenu bind:node on:startEdge on:delete />
 </div>
 
 <style>
@@ -102,33 +65,10 @@
         z-index: 10;
     }
 
-    menu {
-        left: 100%;
-        width: 160px;
-        margin-left: 10px;
-    }
-
-    menu > div {
-        display: flex;
-        justify-content: space-between;
-        padding: 5px 0px;
-    }
-
     .circle {
         border-radius: 50%;
         width: var(--size);
         height: var(--size);
         cursor: pointer;
-    }
-
-    input[type="color"] {
-        display: none;
-    }
-    input[type="range"] {
-        width: 100%;
-    }
-    small {
-        margin-left: 10px;
-        color: #444;
     }
 </style>

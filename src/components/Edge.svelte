@@ -1,33 +1,24 @@
 <script>
-    import { angle, length } from "../math.js";
+    import { angle, distance } from "../math.js";
     import { createEventDispatcher } from "svelte";
     import { fade } from "svelte/transition";
     export let edge;
     const dispatch = createEventDispatcher();
-    $: startPos = {
-        x: edge.start.x,
-        y: edge.start.y,
-    };
-    $: endPos = {
-        x: edge.end.x,
-        y: edge.end.y,
-    };
-    $: len = length(startPos, endPos);
-    $: ang = angle(startPos, endPos);
-    const thickness = 16;
+    $: length = distance(edge.start, edge.end);
+    $: edgeAngle = angle(edge.start, edge.end);
+    const threshold = 16;
     let showMenu = false;
 </script>
 
 <div
-    on:mousedown={(e) => {
-        if (e.target.nodeName != "I") showMenu = !showMenu;
-    }}
+    on:mousedown={() => (showMenu = !showMenu)}
     class="edge {edge.type}"
-    style="width: {len}px; height: {thickness}px;
+    style="width: {length}px;
+    height: {threshold}px;
     transform:
-    translateX({startPos.x}px) 
-    translateY({startPos.y - thickness / 2}px) 
-    rotate({ang}deg);
+    translateX({edge.start.x}px) 
+    translateY({edge.start.y - threshold / 2}px) 
+    rotate({edgeAngle}deg);
     --start-node-size: {edge.start.size}px;
     --end-node-size: {edge.end.size}px"
 >
@@ -35,9 +26,12 @@
     {#if showMenu}
         <menu
             transition:fade={{ duration: 160 }}
-            style="transform: rotate({-ang}deg)"
+            style="transform: rotate({-edgeAngle}deg)"
         >
-            <button on:click={() => dispatch("delete")}>
+            <button
+                class="button"
+                on:click={() => dispatch("delete")}
+            >
                 <i class="fa-solid fa-trash-can" />
             </button>
         </menu>
@@ -50,7 +44,6 @@
         position: absolute;
         transform-origin: left;
         cursor: pointer;
-        z-index: 1;
         display: flex;
         justify-content: center;
         align-items: center;

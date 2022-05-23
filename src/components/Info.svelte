@@ -1,23 +1,28 @@
 <script>
     import { fade } from "svelte/transition";
-    let showHelp = localStorage.getItem("graphEditorHelpShown")
-        ? false
-        : true;
 
-    localStorage.setItem("graphEditorHelpShown", 1);
+    let showInfo = false;
+
+    setTimeout(() => {
+        showInfo = localStorage.getItem("graph-editor-info-shown")
+            ? false
+            : true;
+        localStorage.setItem("graph-editor-info-shown", 1);
+    }, 100);
 </script>
 
-<label>
+<label class="button">
     <i class="fa-solid fa-circle-info" />
-    <input type="checkbox" bind:checked={showHelp} />
+    <input type="checkbox" bind:checked={showInfo} />
 </label>
 
-{#if showHelp}
+{#if showInfo}
     <aside transition:fade={{ duration: 300 }}>
-        <h1>Graph editor</h1>
+        <h1 class="centered">Graph editor</h1>
         <p>
             This tool lets you create and edit graphs. More precisely,
-            directed graphs without loops.
+            directed graphs without loops. Currently only desktop is
+            properly supported.
         </p>
         <p>
             Click anywhere to create a node. Drag it with your mouse
@@ -33,7 +38,7 @@
             remove it.
         </p>
         <p class="centered">
-            <button on:click={() => (showHelp = false)}>Ok</button>
+            <button on:click={() => (showInfo = false)}>Ok</button>
         </p>
     </aside>
 {/if}
@@ -44,7 +49,7 @@
         top: 15px;
         right: 15px;
     }
-    input {
+    label input {
         display: none;
     }
     aside {
@@ -60,7 +65,6 @@
         width: min(90vw, 450px);
         font-size: 20px;
         text-align: justify;
-        user-select: none;
     }
     h1 {
         text-align: center;
@@ -72,13 +76,13 @@
         margin: 12px 0px;
         color: #111;
     }
-    .centered {
-        text-align: center;
-    }
     button {
-        background-color: #aaa;
+        cursor: pointer;
+        outline: none;
+        border: none;
+        font-size: inherit;
+        background-color: #555;
         color: white;
-        text-shadow: none;
         padding: 5px 14px;
         border-radius: 4px;
         margin-top: 10px;
