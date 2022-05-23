@@ -37,7 +37,7 @@
     style="--size:{node.size}px;
     left: {node.x - node.size / 2}px;
     top: {node.y - node.size / 2}px"
-    on:click={(e) => {
+    on:mousedown={(e) => {
         if (e.target.classList.contains("edit")) return;
         showMenu = !showMenu;
     }}
