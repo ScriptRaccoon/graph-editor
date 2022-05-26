@@ -77,6 +77,9 @@
     :global(body) {
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     }
+    :global(body, html) {
+        overscroll-behavior-y: contain;
+    }
     main {
         height: 100vh;
         position: relative;
