@@ -72,6 +72,10 @@
         display: none;
     }
 
+    input[type="range"] {
+        width: 100%;
+    }
+
     small {
         color: #444;
     }
